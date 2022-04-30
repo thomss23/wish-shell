@@ -38,10 +38,34 @@ void printError() {
   write(STDERR_FILENO, error_message, strlen(error_message));
 }
 
+//todo: write built in commands
+void execute_cd() {
+
+}
+
+void execute_path() {
+
+}
+
+void execute_exit() {
+    exit(EXIT_SUCCESS);
+}
+
 void executeCommandsFromUserInput(char *buffer, size_t bufferSize) {
 
     int characters = getline(&buffer, &bufferSize, stdin);
     int index = 0;
+
+    //todo: split input into an array of commands using the '&' separator
+
+    //todo: split each command into an array of type command (command, array of args)
+
+    //todo: define built in commands (exit(done), cd and path)
+
+    //todo: find a way to execute commands in parallel (probably creating children of them from the main process
+    //end execute them in parallel somehow
+
+
     char *myargv[256] = {NULL};
 
     for (char *p = strtok(buffer, DELIM); p; p = strtok(NULL, DELIM)) {
@@ -52,8 +76,17 @@ void executeCommandsFromUserInput(char *buffer, size_t bufferSize) {
         }
     }
 
+    // if(strcmp(myargv[0], "ls") == 0) {
+    //     char *binaryPath = "/bin/ls";
+    //     FILE *fp;
+    //     fp = fopen ("output", "w");
+    //     char *args[] = {binaryPath, "-lh", "/home", ">", "output", NULL};
+    //     execv(binaryPath, args);
+    //     fclose(fp);
+    // }
+
     if(strcmp(myargv[0], EXIT) == 0) {
-        exit(EXIT_SUCCESS);
+        execute_exit();
     }
 
     free(buffer);
@@ -73,6 +106,7 @@ void executeCommandsFromFile(FILE * fp, char *buffer, size_t bufferSize) {
 
     free(buffer);
     fclose(fp);
+    exit(EXIT_SUCCESS);
 
 }
 
@@ -121,7 +155,6 @@ int main(int argc, char *argv[]) {
 
         }
         
-
     }
 
 }
