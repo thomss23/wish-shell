@@ -10,6 +10,7 @@
 #define DELIM " \n" 
 #define BUFFERSIZE 256
 #define EXIT "exit"
+#define COMMAND_DELIM "&"
 
 char *trimString(char *str) {
     
@@ -63,15 +64,33 @@ void execute_exit() {
     exit(EXIT_SUCCESS);
 }
 
+//split input into an array of commands using the '&' separator
+void parseCommandsFromInput(char *parsedCommands[], char *buffer) {
+
+    int index = 0;
+    for (char *p = strtok(buffer, "&"); p; p = strtok(NULL, "&")) {
+        parsedCommands[index] = trimString(p);
+        index++;
+        if (index == BUFFERSIZE - 1) {
+            break;
+        }
+    }
+}
+
+void print_test_array_of_Strings(char *string[]) {
+    for(int i =0 ; string[i]!= NULL; i++) {
+        printf("String %d is %s\n", i, string[i]);
+    }
+}
 
 //!!! Check the return codes of all system calls from the very beginning of your work.
 //!!! This will often catch errors in how you are invoking these new system calls. It's also just good programming sense.
 void executeCommandsFromUserInput(char *buffer, size_t bufferSize) {
 
-    int characters = getline(&buffer, &bufferSize, stdin);
-    int index = 0;
+    getline(&buffer, &bufferSize, stdin);
 
-    //todo: split input into an array of commands using the '&' separator
+    char *parsedCommands[256] = {NULL};
+    parseCommandsFromInput(parsedCommands, buffer);
 
     //todo: split each command into an array of type command (command, array of args)
 
@@ -91,14 +110,14 @@ void executeCommandsFromUserInput(char *buffer, size_t bufferSize) {
         }
     }
 
-    // if(strcmp(myargv[0], "ls") == 0) {
-    //     char *binaryPath = "/bin/ls";
-    //     FILE *fp;
-    //     fp = fopen ("output", "w");
-    //     char *args[] = {binaryPath, "-lh", "/home", ">", "output", NULL};
-    //     execv(binaryPath, args);
-    //     fclose(fp);
-    // }
+//     if(strcmp(myargv[0], "ls") == 0) {
+//         char *binaryPath = "/bin/ls";
+//         FILE *fp;
+//         fp = fopen ("output", "w");
+//         char *args[] = {binaryPath, "-lh", "/home", ">", "output", NULL};
+//         execv(binaryPath, args);
+//         fclose(fp);
+//     }
 
     if(strcmp(myargv[0], EXIT) == 0) {
         execute_exit();
