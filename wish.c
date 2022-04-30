@@ -11,6 +11,28 @@
 #define BUFFERSIZE 256
 #define EXIT "exit"
 
+char *trimString(char *str) {
+    
+    char *end;
+
+    while(isspace((unsigned char)*str)) {
+        str++;
+    } 
+
+    if(*str == 0) {
+        return str;
+    }
+    
+    end = str + strlen(str) - 1;
+    while(end > str && isspace((unsigned char)*end)) {
+        end--;
+    } 
+
+    end[1] = '\0';
+
+    return str;
+}
+
 void printError() {
   char error_message[30] = "An error has occurred\n";
   write(STDERR_FILENO, error_message, strlen(error_message));
