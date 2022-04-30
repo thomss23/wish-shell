@@ -39,10 +39,22 @@ void printError() {
 }
 
 //todo: write built in commands
+
+/* cd always take one argument (0 or >1 args should be signaled as an error). 
+To change directories, use the chdir() system call with the argument supplied by the user; 
+if chdir fails, that is also an error.
+*/
+
 void execute_cd() {
 
 }
-
+/*
+path: The path command takes 0 or more arguments, with each argument separated by whitespace from the others.
+ A typical usage would be like this: wish> path /bin /usr/bin, which would add /bin and /usr/bin to the
+search path of the shell. If the user sets path to be empty, 
+then the shell should not be able to run any programs (except built-in commands). 
+The path command always overwrites the old path with the newly specified path.
+*/
 void execute_path() {
 
 }
@@ -51,6 +63,9 @@ void execute_exit() {
     exit(EXIT_SUCCESS);
 }
 
+
+//!!! Check the return codes of all system calls from the very beginning of your work.
+//!!! This will often catch errors in how you are invoking these new system calls. It's also just good programming sense.
 void executeCommandsFromUserInput(char *buffer, size_t bufferSize) {
 
     int characters = getline(&buffer, &bufferSize, stdin);
